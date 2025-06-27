@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model comments {
+  id         Int       @id @default(autoincrement())
+  ticket_id  Int?
+  priority   priority?
+  comment    String?   @db.VarChar(250)
+  author_id  Int?
+  created_at DateTime? @db.Timestamp(6)
+  users      users?    @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tickets    tickets?  @relation(fields: [ticket_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([author_id])
+  @@index([ticket_id])
+}
+
+model tickets {
+  id                               Int            @id @default(autoincrement())
+  subject                          String         @db.VarChar(50)
+  category                         String         @db.VarChar(20)
+  description                      String         @db.VarChar(500)
+  status                           active_status?
+  creator_id                       Int?
+  assigned_to                      Int?
+  created_at                       DateTime?      @db.Timestamp(6)
+  updated_at                       DateTime?      @db.Timestamp(6)
+  comments                         comments[]
+  users_tickets_assigned_toTousers users?         @relation("tickets_assigned_toTousers", fields: [assigned_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_tickets_creator_idTousers  users?         @relation("tickets_creator_idTousers", fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_tickets")
+
+  @@index([assigned_to])
+  @@index([creator_id])
+  @@index([status])
+}
+
+model users {
+  id                                 Int        @id @default(autoincrement())
+  username                           String     @unique @db.VarChar(25)
+  email                              String     @unique @db.VarChar
+  password                           String     @db.VarChar(20)
+  role                               enum_role?
+  created_at                         DateTime?  @db.Timestamp(6)
+  comments                           comments[]
+  tickets_tickets_assigned_toTousers tickets[]  @relation("tickets_assigned_toTousers")
+  tickets_tickets_creator_idTousers  tickets[]  @relation("tickets_creator_idTousers")
+}
+
+enum active_status {
+  Open
+  In_Progress @map("In Progress")
+  Closed
+}
+
+enum enum_role {
+  user
+  support
+}
+
+enum priority {
+  Low
+  Medium
+  High
+}
