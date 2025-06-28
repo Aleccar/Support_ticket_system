@@ -1,4 +1,4 @@
-const prisma = require('../lib/prisma')
+const prisma = require('../lib/prisma');
 
 // model users {
 //   id                                 Int        @id @default(autoincrement())
@@ -22,9 +22,20 @@ const registerUser = async (username, email, hashedPassword, role) => {
             role
         }
     })
-}
+};
+
+
+const loginUser = async (email) => {
+    return await prisma.users.findUnique({
+        where: {
+            email: email
+        }
+    })
+};
 
 
 
-
-module.exports = { registerUser }
+module.exports = {
+    registerUser,
+    loginUser
+};
