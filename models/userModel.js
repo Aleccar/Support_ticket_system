@@ -1,5 +1,7 @@
 const prisma = require('../lib/prisma');
 
+
+//TODO: Remove this later:
 // model users {
 //   id                                 Int        @id @default(autoincrement())
 //   username                           String     @unique @db.VarChar(25)
