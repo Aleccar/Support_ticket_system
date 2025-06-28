@@ -33,7 +33,26 @@ const createTicket = async (userId, subject, category, description) => {
     })
 };
 
+const findTickets = async (userId) => {
+    return await prisma.tickets.findMany({
+        where: {
+            creator_id: userId
+        }
+    })
+}
+
+const deleteTicketById = async (id, userId) => {
+    return await prisma.tickets.delete({
+        where: {
+            id: Number(id),
+            creator_id: userId
+        }
+    })
+}
+
 
 module.exports = {
-    createTicket
+    createTicket,
+    findTickets,
+    deleteTicketById
 }
