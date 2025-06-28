@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {registerUser} = require('../models/usersModel')
+const { registerUser } = require('../models/userModel')
 
 
 
@@ -29,21 +29,34 @@ const handleRegister = async (req, res) => {
     }
 
     try {
-        const hashedPassword = await bcrypt.hash(password, 15)
-        const { data, error } = await registerUser(username, email, hashedPassword, role)
+        const hashedPassword = await bcrypt.hash(password, 10)
+        const user = await registerUser(username, email, hashedPassword, role)
 
-        if (error) {
-            throw error
-        } else {
-            res.status(201).json({ message: 'User registered successfully.' })
-        }
+        res.status(201).json({ message: `User "${user.username}" registered successfully.` })
+
     } catch (err) {
+        console.log(err)
         res.status(500).json({ error: 'Failed to register new user. Please try again later.' })
     }
 }
 
 
+const handleLogin = async (req, res) => {
+    const {email, password} = req.body
 
+    if (!email || !password) {
+        return res.status(400).json({error: 'Missing required fields: email and password are both required.'})
+    }
+
+    try {
+        // Fetch the user to validate login data:
+        
+
+
+    } catch(error) {
+        res.status(500).json({error: 'Login failed.'})
+    }
+}
 
 
 

@@ -2,10 +2,14 @@ const express = require('express')
 const morgan = require('morgan')
 const commentsRouter = require('./routes/commentsRouter')
 const ticketsRouter = require('./routes/ticketsRouter')
-const usersRouter = require('./routes/usersRouter')
+const userRouter = require('./routes/userRouter')
+const prisma = require('./lib/prisma')
 require('dotenv').config()
-const app = express()
 
+
+
+
+const app = express()
 
 
 // Middleware
@@ -14,7 +18,7 @@ app.use(morgan('short'))
 
 
 // Initialize routers:
-app.use('/user', usersRouter)
+app.use('/user', userRouter)
 app.use('/comments', commentsRouter)
 app.use('/tickets', ticketsRouter)
 
@@ -23,3 +27,10 @@ PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`)
 })
+
+// Shut down Prisma client on closing API.
+process.on('SIGINT', async () => {
+    console.log('\nShutting down...');
+    await prisma.$disconnect();
+    process.exit(0);
+});

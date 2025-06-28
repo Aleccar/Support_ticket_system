@@ -3,20 +3,20 @@ const { handleRegister } = require('../controllers/authController');
 
 
 
-const usersRouter = express.Router();
+const userRouter = express.Router();
 
 
 
 
-usersRouter.post('/register', handleRegister);
-
-
-
-
-
+userRouter.post('/register', handleRegister);
 
 
 
 
 
-module.exports = usersRouter;
+
+
+
+
+
+module.exports = userRouter;

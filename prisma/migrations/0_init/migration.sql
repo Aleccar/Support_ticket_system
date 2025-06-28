@@ -14,7 +14,7 @@ CREATE TABLE "comments" (
     "priority" "priority",
     "comment" VARCHAR(250),
     "author_id" INTEGER,
-    "created_at" TIMESTAMP(6),
+    "created_at" TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "comments_pkey" PRIMARY KEY ("id")
 );
@@ -28,7 +28,7 @@ CREATE TABLE "tickets" (
     "status" "active_status",
     "creator_id" INTEGER,
     "assigned_to" INTEGER,
-    "created_at" TIMESTAMP(6),
+    "created_at" TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(6),
 
     CONSTRAINT "tickets_pkey" PRIMARY KEY ("id")
@@ -39,9 +39,9 @@ CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "username" VARCHAR(25) NOT NULL,
     "email" VARCHAR NOT NULL,
-    "password" VARCHAR(20) NOT NULL,
+    "password" VARCHAR NOT NULL,
     "role" "enum_role",
-    "created_at" TIMESTAMP(6),
+    "created_at" TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );

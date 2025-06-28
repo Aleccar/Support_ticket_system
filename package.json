@@ -8,6 +8,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "nodemon": "^3.1.10",
     "prisma": "^6.10.1"
   }
 }
