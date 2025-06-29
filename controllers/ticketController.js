@@ -1,4 +1,4 @@
-const { prismaCreateTicket, prismaFindTickets, prismaDeleteTicket, prismaUpdateTicket, prismaFindSpecTicket } = require('../models/ticketsModel')
+const { prismaCreateTicket, prismaFindTickets, prismaDeleteTicket, prismaUpdateTicket, prismaFindSpecTicket, prismaSupportFindTickets } = require('../models/ticketsModel')
 
 
 const handleTicketCreation = async (req, res) => {
@@ -25,7 +25,16 @@ const handleTicketCreation = async (req, res) => {
 
 const findMyTickets = async (req, res) => {
     const userId = req.user.userId
-    console.log(userId)
+    const userRole = req.user.role
+
+    if (userRole === 'support') {
+        try {
+            const tickets = await prismaSupportFindTickets()
+            res.status(200).json(tickets)
+        } catch (error) {
+            res.status(500).json({ error: 'Could not find any tickets at this time, please try again later.' })
+        }
+    }
 
     try {
         const tickets = await prismaFindTickets(userId)
@@ -43,8 +52,8 @@ const findSpecificTicket = async (req, res) => {
         const myTicket = await prismaFindSpecTicket(id, userId)
 
         res.status(200).json(myTicket)
-    } catch(error) {
-        res.status(500).json({error: `Could not find a ticket with ID: ${id}`})
+    } catch (error) {
+        res.status(500).json({ error: `Could not find a ticket with ID: ${id}` })
     }
 }
 
