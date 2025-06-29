@@ -19,7 +19,7 @@ app.use(morgan('short'))
 
 // Initialize routers:
 app.use('/user', userRouter)
-app.use('/comments', commentsRouter)
+app.use('/tickets/:id/comments', commentsRouter)
 app.use('/tickets', ticketsRouter)
 
 PORT = process.env.PORT || 3000

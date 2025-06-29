@@ -1,4 +1,4 @@
-const { createTicket, findTickets, deleteTicketById } = require('../models/ticketsModel')
+const { prismaCreateTicket, prismaFindTickets, prismaDeleteTicket, prismaUpdateTicket, prismaFindSpecTicket } = require('../models/ticketsModel')
 
 
 const handleTicketCreation = async (req, res) => {
@@ -11,7 +11,7 @@ const handleTicketCreation = async (req, res) => {
     }
 
     try {
-        const newTicket = await createTicket(userId, subject, category, description)
+        const newTicket = await prismaCreateTicket(userId, subject, category, description)
 
         res.status(201).json({ message: `ticket created successfully.` })
 
@@ -28,10 +28,23 @@ const findMyTickets = async (req, res) => {
     console.log(userId)
 
     try {
-        const tickets = await findTickets(userId)
+        const tickets = await prismaFindTickets(userId)
         res.status(200).json({ tickets })
     } catch (error) {
         res.status(500).json({ error: 'Could not find any tickets at this time, please try again later.' })
+    }
+}
+
+const findSpecificTicket = async (req, res) => {
+    const userId = req.user.userId
+    const id = req.params.id
+
+    try {
+        const myTicket = await prismaFindSpecTicket(id, userId)
+
+        res.status(200).json(myTicket)
+    } catch(error) {
+        res.status(500).json({error: `Could not find a ticket with ID: ${id}`})
     }
 }
 
@@ -40,8 +53,7 @@ const deleteTicket = async (req, res) => {
     const userId = req.user.userId
 
     try {
-        const deletedTicket = await deleteTicketById(id, userId) 
-        console.log (deletedTicket)
+        const deletedTicket = await prismaDeleteTicket(id, userId)
         res.sendStatus(204)
 
     } catch (error) {
@@ -51,11 +63,30 @@ const deleteTicket = async (req, res) => {
 }
 
 
+const updateTicket = async (req, res) => {
+    const id = req.params.id
+    const userId = req.user.userId
+    const data = req.body
+
+    console.log(data)
+
+    try {
+        const updatedTicket = await prismaUpdateTicket(id, userId, data)
+        console.log(updatedTicket)
+        res.status(200).json(updatedTicket)
+
+    } catch (error) {
+        res.status(500).json({ error: 'Could not update ticket at this time, please try again later.' })
+    }
+}
+
 
 
 
 module.exports = {
     handleTicketCreation,
     findMyTickets,
-    deleteTicket
+    deleteTicket,
+    updateTicket,
+    findSpecificTicket
 }

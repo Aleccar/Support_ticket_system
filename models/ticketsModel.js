@@ -20,8 +20,12 @@ const prisma = require('../lib/prisma');
 //   @@index([status])
 // }
 
+const prismaSupportFindTickets = async () => {
+    return await prisma.tickets.findMany()
+}
 
-const createTicket = async (userId, subject, category, description) => {
+
+const prismaCreateTicket = async (userId, subject, category, description) => {
     return await prisma.tickets.create({
         data: {
             subject,
@@ -33,7 +37,7 @@ const createTicket = async (userId, subject, category, description) => {
     })
 };
 
-const findTickets = async (userId) => {
+const prismaFindTickets = async (userId) => {
     return await prisma.tickets.findMany({
         where: {
             creator_id: userId
@@ -41,7 +45,16 @@ const findTickets = async (userId) => {
     })
 }
 
-const deleteTicketById = async (id, userId) => {
+const prismaFindSpecTicket = async (id, userId) => {
+    return await prisma.tickets.findFirst({
+        where: {
+            id: Number(id),
+            creator_id: userId
+        }
+    })
+}
+
+const prismaDeleteTicket = async (id, userId) => {
     return await prisma.tickets.delete({
         where: {
             id: Number(id),
@@ -50,9 +63,22 @@ const deleteTicketById = async (id, userId) => {
     })
 }
 
+const prismaUpdateTicket = async (id, userId, data) => {
+    return await prisma.tickets.update({
+        where: {
+            id: Number(id),
+            creator_id: userId
+        },
+        data: data
+    })
+}
+
 
 module.exports = {
-    createTicket,
-    findTickets,
-    deleteTicketById
+    prismaCreateTicket,
+    prismaFindTickets,
+    prismaDeleteTicket,
+    prismaUpdateTicket,
+    prismaFindSpecTicket,
+    prismaSupportFindTickets
 }
