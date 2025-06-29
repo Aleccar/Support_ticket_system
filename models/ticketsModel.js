@@ -24,6 +24,31 @@ const prismaSupportFindTickets = async () => {
     return await prisma.tickets.findMany()
 }
 
+const prismaSupportFindTicket = async (id) => {
+    return await prisma.tickets.findUnique({
+        where: {
+            id: Number(id)
+        }
+    })
+}
+
+const prismaSupportUpdateTicket = async (id, data) => {
+    return await prisma.tickets.update({
+        where: {
+            id: Number(id)
+        },
+        data: data
+    })
+}
+
+const prismaSupportDeleteTicket = async (id) => {
+    return await prisma.tickets.delete({
+        where: {
+            id: Number(id)
+        }
+    })
+}
+
 
 const prismaCreateTicket = async (userId, subject, category, description) => {
     return await prisma.tickets.create({
@@ -80,5 +105,8 @@ module.exports = {
     prismaDeleteTicket,
     prismaUpdateTicket,
     prismaFindSpecTicket,
-    prismaSupportFindTickets
+    prismaSupportFindTickets,
+    prismaSupportFindTicket,
+    prismaSupportDeleteTicket,
+    prismaSupportUpdateTicket
 }
