@@ -48,6 +48,7 @@ const findMyTickets = async (req, res) => {
     }
 }
 
+
 const findSpecificTicket = async (req, res) => {
     const id = req.params.id
     const { userId, role } = req.user
@@ -69,6 +70,7 @@ const findSpecificTicket = async (req, res) => {
     }
 }
 
+
 const deleteTicket = async (req, res) => {
     const id = req.params.id
     const { userId, role } = req.user
@@ -76,7 +78,7 @@ const deleteTicket = async (req, res) => {
     if (role === 'support') {
         try {
             const deletedTicket = await prismaSupportDeleteTicket(id)
-            return res.sendStatus(204)
+            return res.status(200).json({ message: `Ticket deleted.` })
         } catch (error) {
             return res.status(500).json({ error: `Failed to delete task with ID: ${id}` })
         }
@@ -84,7 +86,7 @@ const deleteTicket = async (req, res) => {
 
     try {
         const deletedTicket = await prismaDeleteTicket(id, userId)
-        return res.sendStatus(204)
+        return res.status(200).json({ message: `Ticket deleted.` })
     } catch (error) {
         return res.status(500).json({ error: `Failed to delete task with ID: ${id}` })
     }
@@ -112,7 +114,6 @@ const updateTicket = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ error: 'Could not update ticket at this time, please try again later.' })
     }
-
 }
 
 
