@@ -11,7 +11,7 @@ const {
 } = require('../models/ticketsModel')
 
 
-const handleTicketCreation = async (req, res) => {
+const handleTicketCreation = async (req, res, next) => {
     const { subject, category, description } = req.body
     const userId = req.user.userId
 
@@ -22,13 +22,13 @@ const handleTicketCreation = async (req, res) => {
     try {
         const newTicket = await prismaCreateTicket(userId, subject, category, description)
         return res.status(201).json({ message: `ticket created successfully.` })
-    } catch (err) {
-        return res.status(500).json({ error: 'Failed to create ticket. Please try again later.' })
+    } catch (error) {
+        next(error)
     }
 }
 
 
-const findMyTickets = async (req, res) => {
+const findMyTickets = async (req, res, next) => {
     const { userId, role } = req.user
 
     if (role === 'support') {
@@ -36,7 +36,7 @@ const findMyTickets = async (req, res) => {
             const tickets = await prismaSupportFindTickets()
             return res.status(200).json(tickets)
         } catch (error) {
-            return res.status(500).json({ error: 'Could not find any tickets at this time, please try again later.' })
+            next(error)
         }
     }
 
@@ -44,12 +44,12 @@ const findMyTickets = async (req, res) => {
         const tickets = await prismaFindTickets(userId)
         return res.status(200).json({ tickets })
     } catch (error) {
-        return res.status(500).json({ error: 'Could not find any tickets at this time, please try again later.' })
+        next(error)
     }
 }
 
 
-const findSpecificTicket = async (req, res) => {
+const findSpecificTicket = async (req, res, next) => {
     const id = req.params.id
     const { userId, role } = req.user
 
@@ -58,7 +58,7 @@ const findSpecificTicket = async (req, res) => {
             const foundTicket = await prismaSupportFindTicket(id)
             return res.status(200).json(foundTicket)
         } catch (error) {
-            return res.status(500).json({ error: `Could not find a ticket with ID: ${id}` })
+            next(error)
         }
     }
 
@@ -66,12 +66,12 @@ const findSpecificTicket = async (req, res) => {
         const myTicket = await prismaFindSpecTicket(id, userId)
         return res.status(200).json(myTicket)
     } catch (error) {
-        return res.status(500).json({ error: `Could not find a ticket with ID: ${id}` })
+        next(error)
     }
 }
 
 
-const deleteTicket = async (req, res) => {
+const deleteTicket = async (req, res, next) => {
     const id = req.params.id
     const { userId, role } = req.user
 
@@ -80,7 +80,7 @@ const deleteTicket = async (req, res) => {
             const deletedTicket = await prismaSupportDeleteTicket(id)
             return res.status(200).json({ message: `Ticket deleted.` })
         } catch (error) {
-            return res.status(500).json({ error: `Failed to delete task with ID: ${id}` })
+            next(error)
         }
     }
 
@@ -88,12 +88,12 @@ const deleteTicket = async (req, res) => {
         const deletedTicket = await prismaDeleteTicket(id, userId)
         return res.status(200).json({ message: `Ticket deleted.` })
     } catch (error) {
-        return res.status(500).json({ error: `Failed to delete task with ID: ${id}` })
+        next(error)
     }
 }
 
 
-const updateTicket = async (req, res) => {
+const updateTicket = async (req, res, next) => {
     const id = req.params.id
     const data = req.body
     const { userId, role } = req.user
@@ -103,8 +103,7 @@ const updateTicket = async (req, res) => {
             const updatedTicket = await prismaSupportUpdateTicket(id, data)
             return res.status(200).json(updatedTicket)
         } catch (error) {
-            console.log(error)
-            return res.status(500).json({ error: 'Could not update ticket at this time, please try again later.' })
+            next(error)
         }
     }
 
@@ -112,11 +111,9 @@ const updateTicket = async (req, res) => {
         const updatedTicket = await prismaUpdateTicket(id, userId, data)
         return res.status(200).json(updatedTicket)
     } catch (error) {
-        return res.status(500).json({ error: 'Could not update ticket at this time, please try again later.' })
+        next(error)
     }
 }
-
-
 
 
 module.exports = {
