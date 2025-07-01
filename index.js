@@ -4,6 +4,7 @@ const commentsRouter = require('./routes/commentsRouter')
 const ticketsRouter = require('./routes/ticketsRouter')
 const userRouter = require('./routes/userRouter')
 const prisma = require('./lib/prisma')
+const errorHandler = require('./middleware/errorHandlerMiddleware')
 require('dotenv').config()
 
 
@@ -15,6 +16,7 @@ const app = express()
 // Middleware
 app.use(express.json())
 app.use(morgan('short'))
+app.use(errorHandler)
 
 
 // Initialize routers:
