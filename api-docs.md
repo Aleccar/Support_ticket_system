@@ -74,13 +74,13 @@ Authorization: Bearer <token>
 {
     "tickets": [
         {
-            "id": integer,
+            "id": number,
             "subject": "string",
             "category": "string",
             "description": "string",
             "status": "Open | In_Progress | Closed",
-            "creator_id": integer,
-            "assigned_to": integer,
+            "creator_id": number,
+            "assigned_to": number,
             "created_at": "timestamp without time zone (6)",
             "updated_at": "timestamp without time zone (6)"
         }
