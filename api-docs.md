@@ -74,13 +74,13 @@ Authorization: Bearer <token>
 {
     "tickets": [
         {
-            "id": number,
+            "id": -1,
             "subject": "string",
             "category": "string",
             "description": "string",
             "status": "Open | In_Progress | Closed",
-            "creator_id": number,
-            "assigned_to": number,
+            "creator_id": -1,
+            "assigned_to": -1,
             "created_at": "timestamp without time zone (6)",
             "updated_at": "timestamp without time zone (6)"
         }
@@ -101,13 +101,13 @@ Authorization: Bearer <token>
 - `200 OK` - Returns ticket objects.
 ``` json
 {
-    "id": integer,
+    "id": -1,
     "subject": "string",
     "category": "string",
     "description": "string",
     "status": "Open | In_Progress | Closed",
-    "creator_id": integer,
-    "assigned_to": integer,
+    "creator_id": -1,
+    "assigned_to": -1,
     "created_at": "timestamp without time zone (6)",
     "updated_at": "timestamp without time zone (6)"
 }
@@ -183,11 +183,11 @@ Authorization: Bearer <token>
 ``` json
 [
     {
-        "id": integer,
-        "ticket_id": integer,
+        "id": -1,
+        "ticket_id": -1,
         "priority": "Low | Medium | High",
         "comment": "string",
-        "author_id": integer,
+        "author_id": -1,
         "created_at": "timestamp without time zone (6)"
     }
 ]
