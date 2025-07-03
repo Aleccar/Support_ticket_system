@@ -42,11 +42,18 @@ const prismaSupportUpdateTicket = async (id, data) => {
 }
 
 const prismaSupportDeleteTicket = async (id) => {
-    return await prisma.tickets.delete({
+    const exists = await prisma.tickets.findUnique({
         where: {
             id: Number(id)
         }
     })
+    if (exists) {
+        return await prisma.tickets.delete({
+            where: {
+                id: Number(id)
+            }
+        })
+    } else return null
 }
 
 
@@ -79,12 +86,20 @@ const prismaFindSpecTicket = async (id) => {
 }
 
 const prismaDeleteTicket = async (id, userId) => {
-    return await prisma.tickets.delete({
+    const exists = await prisma.tickets.findUnique({
         where: {
             id: Number(id),
             creator_id: userId
         }
     })
+    if (exists) {
+        return await prisma.tickets.delete({
+            where: {
+                id: Number(id),
+                creator_id: userId
+            }
+        })
+    } else return null
 }
 
 const prismaUpdateTicket = async (id, userId, data) => {

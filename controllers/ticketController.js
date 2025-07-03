@@ -90,6 +90,9 @@ const deleteTicket = async (req, res, next) => {
     if (role === 'support') {
         try {
             const deletedTicket = await prismaSupportDeleteTicket(id)
+            if (deletedTicket === null) {
+                return res.status(404).json({error: 'Ticket does not exist.'})
+            }
             return res.status(200).json({ message: `Ticket deleted.` })
         } catch (error) {
             next(error)
@@ -98,6 +101,9 @@ const deleteTicket = async (req, res, next) => {
 
     try {
         const deletedTicket = await prismaDeleteTicket(id, userId)
+        if (deletedTicket === null) {
+                return res.status(404).json({error: 'Ticket does not exist.'})
+            }
         return res.status(200).json({ message: `Ticket deleted.` })
     } catch (error) {
         next(error)
@@ -134,7 +140,7 @@ const updateTicket = async (req, res, next) => {
 
     try {
         if (data.assigned_to || data.status) {
-            return res.status(400).json('You do not have permission to change status on, or assign tickets.')
+            return res.status(403).json('You do not have permission to change status on, or assign tickets.')
         }
 
         const updatedTicket = await prismaUpdateTicket(id, userId, data)
