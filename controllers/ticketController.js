@@ -64,6 +64,10 @@ const findSpecificTicket = async (req, res, next) => {
 
     try {
         const myTicket = await prismaFindSpecTicket(id, userId)
+        if (myTicket === null) {
+            return res.status(403).json({error: `You do not have access to ticket-ID: ${id}`})
+        }
+
         return res.status(200).json(myTicket)
     } catch (error) {
         next(error)
