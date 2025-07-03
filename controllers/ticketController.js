@@ -91,7 +91,7 @@ const deleteTicket = async (req, res, next) => {
         try {
             const deletedTicket = await prismaSupportDeleteTicket(id)
             if (deletedTicket === null) {
-                return res.status(404).json({error: 'Ticket does not exist.'})
+                return res.status(404).json({ error: 'Ticket does not exist.' })
             }
             return res.status(200).json({ message: `Ticket deleted.` })
         } catch (error) {
@@ -102,8 +102,8 @@ const deleteTicket = async (req, res, next) => {
     try {
         const deletedTicket = await prismaDeleteTicket(id, userId)
         if (deletedTicket === null) {
-                return res.status(404).json({error: 'Ticket does not exist.'})
-            }
+            return res.status(404).json({ error: 'Ticket does not exist.' })
+        }
         return res.status(200).json({ message: `Ticket deleted.` })
     } catch (error) {
         next(error)

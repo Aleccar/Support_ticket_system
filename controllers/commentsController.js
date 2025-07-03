@@ -10,7 +10,7 @@ const createComment = async (req, res, next) => {
     }
 
     if (!comment) {
-        return res.status(400).json({ error: 'Missing required fields: Comment is required' })
+        return res.status(400).json({ error: 'Missing required fields: comment is required' })
     }
 
     try {
@@ -103,11 +103,14 @@ const updateCommentById = async (req, res, next) => {
     }
 
     try {
-        if (data.priority !== 'High' && data.priority !== 'Medium' && data.priority !== 'Low') {
+        if (data.priority && data.priority !== 'High' && data.priority !== 'Medium' && data.priority !== 'Low') {
             return res.status(400).json({ error: 'Wrong format. priority must be either: High, Medium or Low.' })
         }
 
         const updatedComment = await prismaUpdateComment(id, data)
+        if (updatedComment === null) {
+            return res.status(404).json({error: `No comment with ID: ${id} exists.`})
+        }
         return res.status(200).json({ message: 'Comment has been updated.' })
     } catch (error) {
         next(error)

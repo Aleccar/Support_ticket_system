@@ -63,12 +63,19 @@ const prismaGetCommentByTicket = async (ticketId) => {
 
 
 const prismaUpdateComment = async (id, data) => {
-    return await prisma.comments.update({
-        where: {
+    const commentExists = await prisma.comments.findUnique({
+        where:{
             id: Number(id)
-        },
-        data: data
+        }
     })
+    if (commentExists) {
+        return await prisma.comments.update({
+            where: {
+                id: Number(id)
+            },
+            data: data
+        })
+    } else return null
 }
 
 
