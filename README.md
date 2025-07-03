@@ -1,5 +1,5 @@
 # support-ticket-system
-A simple support ticket system that allows users create tickets stored in a PostgreSQL database. Support personnel are able to view all tickets, assign them to users, and write comments.
+A simple support ticket system API that allows users create tickets stored in a PostgreSQL database. Support personnel are able to view all tickets, assign tickets to users, and write comments.
 
 ------
 
@@ -19,7 +19,7 @@ A simple support ticket system that allows users create tickets stored in a Post
 ## User Endpoints (`/user`)
 - `POST /user/register`
 *Registers a new user. Requires `username`, `email`, `password`, and `role`*
-- `POST /user/login`    
+- `POST /user/login`
 *Validates user credentials and returns a JWT token* 
 - `GET /user/me`
 *Returns currently logged-in user's information*
@@ -38,7 +38,7 @@ A simple support ticket system that allows users create tickets stored in a Post
 *Deletes personal tickets; support staff can delete any*
 
 ## Comment Endpoints (`/tickets/:id/comments`)
-- `GET /tickets/:id/comments`     
+- `GET /tickets/:id/comments`
 *Returns all comments by ticket ID*
 - `POST /tickets/:id/comments`
 *Creates a comment. `comment` is required, `priority` is optional*
@@ -52,7 +52,7 @@ A simple support ticket system that allows users create tickets stored in a Post
 ------
 
 # Set up
-### *A quick guide to set up and run the project locally*
+### *A short guide for setting up and running the project locally*
 
 ## 1. Clone the repository
 ```
@@ -86,4 +86,8 @@ npx prisma migrate dev --name init
 ```
 npm run dev
 ```
-Server should now run at: http://localhost:3000 
+Server should now run at: http://localhost:3000
+
+-----
+
+WIP More might come soon.
