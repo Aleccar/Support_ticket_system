@@ -48,6 +48,9 @@ const deleteComment = async (req, res, next) => {
 
     try {
         const deletedComment = await prismaDeleteComment(commentId)
+        if (deletedComment === null) {
+            return res.status(404).json({ error: `No comment with ID: ${commentId} exists.` })
+        }
         return res.status(200).json({ message: `Comment deleted.` })
     } catch (error) {
         next(error)
@@ -65,6 +68,12 @@ const deleteAllTicketComments = async (req, res, next) => {
 
     try {
         const deletedComments = await prismaDeleteTicketComments(ticketId)
+        if (deletedComments === null) {
+            return res.status(404).json({ error: `No ticket with ID: ${ticketId} exists.` })
+        } else if (deletedComments.count === 0) {
+            return res.status(404).json({ error: `No comments exist for ticket with ID: ${ticketId}.` })
+        }
+
         return res.status(200).json({ message: `All comments for this ticket deleted.` })
     } catch (error) {
         next(error)
@@ -97,6 +106,7 @@ const updateCommentById = async (req, res, next) => {
     const id = req.params.id
     const { role } = req.user
     const data = req.body
+    console.log(data)
 
     if (role !== 'support') {
         return res.status(403).json({ error: 'You do not have permission to update comments.' })
@@ -107,9 +117,13 @@ const updateCommentById = async (req, res, next) => {
             return res.status(400).json({ error: 'Wrong format. priority must be either: High, Medium or Low.' })
         }
 
+        if (!data.comment && !data.priority) {
+            return res.status(400).json({ error: 'Missing fields: comment or priority. At least one is required to update a comment.' })
+        }
+
         const updatedComment = await prismaUpdateComment(id, data)
         if (updatedComment === null) {
-            return res.status(404).json({error: `No comment with ID: ${id} exists.`})
+            return res.status(404).json({ error: `No comment with ID: ${id} exists.` })
         }
         return res.status(200).json({ message: 'Comment has been updated.' })
     } catch (error) {

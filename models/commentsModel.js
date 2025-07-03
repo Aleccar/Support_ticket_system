@@ -37,19 +37,33 @@ const prismaCreateCommentWithPrio = async (ticketId, priority, comment, userId) 
 }
 
 const prismaDeleteComment = async (commentId) => {
-    return await prisma.comments.delete({
+    const commentExists = await prisma.comments.findUnique({
         where: {
             id: Number(commentId)
         }
     })
+    if (commentExists) {
+        return await prisma.comments.delete({
+            where: {
+                id: Number(commentId)
+            }
+        })
+    } else return null
 }
 
 const prismaDeleteTicketComments = async (ticketId) => {
-    return await prisma.comments.deleteMany({
+    const ticketExists = await prisma.tickets.findUnique({
         where: {
-            ticket_id: Number(ticketId)
+            id: Number(ticketId)
         }
     })
+    if (ticketExists) {
+            return await prisma.comments.deleteMany({
+                where: {
+                    ticket_id: Number(ticketId)
+                }
+            })
+    } else return null
 }
 
 
