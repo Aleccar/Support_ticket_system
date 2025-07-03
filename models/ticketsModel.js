@@ -70,11 +70,10 @@ const prismaFindTickets = async (userId) => {
     })
 }
 
-const prismaFindSpecTicket = async (id, userId) => {
+const prismaFindSpecTicket = async (id) => {
     return await prisma.tickets.findFirst({
         where: {
             id: Number(id),
-            creator_id: userId
         }
     })
 }

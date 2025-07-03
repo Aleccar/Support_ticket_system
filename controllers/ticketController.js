@@ -56,6 +56,10 @@ const findSpecificTicket = async (req, res, next) => {
     if (role === 'support') {
         try {
             const foundTicket = await prismaSupportFindTicket(id)
+            if (foundTicket === null) {
+                return res.status(404).json({ error: `Could not find ticket with ID: ${id}` })
+            }
+
             return res.status(200).json(foundTicket)
         } catch (error) {
             next(error)
@@ -63,9 +67,13 @@ const findSpecificTicket = async (req, res, next) => {
     }
 
     try {
-        const myTicket = await prismaFindSpecTicket(id, userId)
+        const myTicket = await prismaFindSpecTicket(id)
         if (myTicket === null) {
-            return res.status(403).json({error: `You do not have access to ticket-ID: ${id}`})
+            return res.status(404).json({ error: `Could not find ticket with ID: ${id}` })
+        }
+
+        if (myTicket.creator_id !== userId) {
+            return res.status(403).json({ error: `You do not have access to ticket-ID: ${id}` })
         }
 
         return res.status(200).json(myTicket)
