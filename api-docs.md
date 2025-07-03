@@ -1,4 +1,4 @@
-# Api Documentation 
+# API Documentation 
 A more **in-depth** description of all endpoints and how to call them.
 
 ## Table of Contents:
@@ -131,8 +131,8 @@ Authorization: Bearer <token>
 }
 ```
 **Response:**
-`201 Created` - Returns a success message on creation.
-`400 Bad Request` - If any required fields are missing.
+- `201 Created` - Returns a success message on creation.
+- `400 Bad Request` - If any required fields are missing.
 
 -----
 `PUT /tickets/:id`
@@ -152,9 +152,9 @@ Authorization: Bearer <token>
 }
 ```
 **Response:**
-`200 OK` - Returns a success message on successful update.
-`400 Bad Request` - On faulty format of status.
-`403 Forbidden` - If you are not support and are trying to update status or assigned_to.
+- `200 OK` - Returns a success message on successful update.
+- `400 Bad Request` - On faulty format of status.
+- `403 Forbidden` - If you are not support and are trying to update status or assigned_to.
 
 -----
 `DELETE /tickets/:id`
@@ -164,8 +164,8 @@ Deletes a ticket by specified ID.
 Authorization: Bearer <token>
 ```
 **Response:**
-`200 OK` - Returns a success message on successful deletion.
-`404 Not Found` - On trying to delete a ticket that does not exist.
+- `200 OK` - Returns a success message on successful deletion.
+- `404 Not Found` - On trying to delete a ticket that does not exist.
 
 -----
 
@@ -179,7 +179,7 @@ Fetches all comments tied to a specified Ticket-ID
 Authorization: Bearer <token>
 ```
 **Response:**
-`200 OK` - returns all comments made on the specified Ticket-ID.
+- `200 OK` - returns all comments made on the specified Ticket-ID.
 ``` json
 [
     {
@@ -192,8 +192,8 @@ Authorization: Bearer <token>
     }
 ]
 ```
-`404 Not Found` - If there are not existing comments on the specified Ticket-ID.
-`403 Forbidden` - If any non-support user tries to access comments.
+- `404 Not Found` - If there are not existing comments on the specified Ticket-ID.
+- `403 Forbidden` - If any non-support user tries to access comments.
 
 
 -----
@@ -211,10 +211,10 @@ Authorization: Bearer <token>
 }
 ```
 **Response:**
-`201 Created` - Returns a success message on successfully created comment.
-`400 Bad Request` - On missing fields or incorrect types for priority.
-`404 Not Found` - On trying to create a comment for a non-existing ticket.
-`403 Forbidden` - On a non-support user attempting to create a comment.
+- `201 Created` - Returns a success message on successfully created comment.
+- `400 Bad Request` - On missing fields or incorrect types for priority.
+- `404 Not Found` - On trying to create a comment for a non-existing ticket.
+- `403 Forbidden` - On a non-support user attempting to create a comment.
 
 -----
 `PUT /tickets/:id/comments`
@@ -231,10 +231,10 @@ Authorization: Bearer <token>
 }
 ```
 **Response:**
-`200 OK` - Returns a success message on successfully updating a comment.
-`400 Bad Request` - On missing both fields or incorrect types for priority.
-`404 Not Found` - On trying to create a comment for a non-existing ticket.
-`403 Forbidden` - On a non-support user attempting to create a comment.
+- `200 OK` - Returns a success message on successfully updating a comment.
+- `400 Bad Request` - On missing both fields or incorrect types for priority.
+- `404 Not Found` - On trying to create a comment for a non-existing ticket.
+- `403 Forbidden` - On a non-support user attempting to create a comment.
 
 -----
 `DELETE /tickets/:id/comments`
@@ -244,9 +244,9 @@ Deletes a comment based on ID.
 Authorization: Bearer <token>
 ```
 **Response:**
-`200 OK` - Returns a success message on successfully deleting a comment.
-`404 Not Found` - On trying to delete a comment that does not exist.
-`403 Forbidden` - On a non-support user attempting to delete a comment.
+- `200 OK` - Returns a success message on successfully deleting a comment.
+- `404 Not Found` - On trying to delete a comment that does not exist.
+- `403 Forbidden` - On a non-support user attempting to delete a comment.
 
 -----
 `DELETE /tickets/:id/comments/all`
@@ -256,9 +256,9 @@ Deletes all comments tied to a ticket ID.
 Authorization: Bearer <token>
 ```
 **Response:**
-`200 OK` - Returns a success message on successfully deleting comments.
-`404 Not Found` - On deleting comments for a non-existing ticket, or when a ticket has no comments.
-`403 Forbidden` - On a non-support user attempting to delete a comment.
+- `200 OK` - Returns a success message on successfully deleting comments.
+- `404 Not Found` - On deleting comments for a non-existing ticket, or when a ticket has no comments.
+- `403 Forbidden` - On a non-support user attempting to delete a comment.
 
 -----
 
