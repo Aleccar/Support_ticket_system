@@ -98,24 +98,31 @@ const updateTicket = async (req, res, next) => {
     const data = req.body
     const { userId, role } = req.user
 
+    console.log(data.status)
+
     if (role === 'support') {
-        try {
-            if (data.assigned_to) {
-                data.assigned_to = Number(data.assigned_to)
+        if (data.status !== 'Open' && data.status !== 'In_Progress' && data.status !== 'Closed') {
+            return res.status(400).json({ error: `Wrong format: status must be either: Open, In_Progress, or Closed` })
+        } else {
+            try {
+                if (data.assigned_to) {
+                    data.assigned_to = Number(data.assigned_to)
+                    const updatedTicket = await prismaSupportUpdateTicket(id, data)
+                    return res.status(200).json(updatedTicket)
+                }
+
                 const updatedTicket = await prismaSupportUpdateTicket(id, data)
                 return res.status(200).json(updatedTicket)
+            } catch (error) {
+                next(error)
             }
-
-            const updatedTicket = await prismaSupportUpdateTicket(id, data)
-            return res.status(200).json(updatedTicket)
-        } catch (error) {
-            next(error)
         }
+
     }
 
     try {
-        if (data.assigned_to) {
-            return res.status(400).json('You do not have permission to assign tickets to others.')
+        if (data.assigned_to || data.status) {
+            return res.status(400).json('You do not have permission to change status on, or assign tickets.')
         }
 
         const updatedTicket = await prismaUpdateTicket(id, userId, data)
