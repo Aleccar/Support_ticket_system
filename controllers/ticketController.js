@@ -120,7 +120,7 @@ const updateTicket = async (req, res, next) => {
 
     if (role === 'support') {
         if (data.status !== 'Open' && data.status !== 'In_Progress' && data.status !== 'Closed') {
-            return res.status(400).json({ error: `Wrong format: status must be either: Open, In_Progress, or Closed` })
+            return res.status(400).json({ error: `Wrong format. status must be either: Open, In_Progress, or Closed` })
         } else {
             try {
                 if (data.assigned_to) {

@@ -2,24 +2,38 @@ const prisma = require('../lib/prisma');
 
 
 const prismaCreateComment = async (ticketId, comment, userId) => {
-    return await prisma.comments.create({
-        data: {
-            ticket_id: ticketId,
-            comment: comment,
-            author_id: userId
+    const ticketExists = await prisma.tickets.findUnique({
+        where: {
+            id: Number(ticketId)
         }
     })
+    if (ticketExists) {
+        return await prisma.comments.create({
+            data: {
+                ticket_id: Number(ticketId),
+                comment: comment,
+                author_id: userId
+            }
+        })
+    } else return null
 };
 
 const prismaCreateCommentWithPrio = async (ticketId, priority, comment, userId) => {
-    return await prisma.comments.create({
-        data: {
-            ticket_id: Number(ticketId),
-            priority: priority,
-            comment: comment,
-            author_id: userId
+    const ticketExists = await prisma.tickets.findUnique({
+        where: {
+            id: Number(ticketId)
         }
     })
+    if (ticketExists) {
+        return await prisma.comments.create({
+            data: {
+                ticket_id: Number(ticketId),
+                priority: priority,
+                comment: comment,
+                author_id: userId
+            }
+        })
+    } else return null
 }
 
 const prismaDeleteComment = async (commentId) => {
