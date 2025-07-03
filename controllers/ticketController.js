@@ -100,6 +100,12 @@ const updateTicket = async (req, res, next) => {
 
     if (role === 'support') {
         try {
+            if (data.assigned_to) {
+                data.assigned_to = Number(data.assigned_to)
+                const updatedTicket = await prismaSupportUpdateTicket(id, data)
+                return res.status(200).json(updatedTicket)
+            }
+
             const updatedTicket = await prismaSupportUpdateTicket(id, data)
             return res.status(200).json(updatedTicket)
         } catch (error) {
@@ -108,6 +114,10 @@ const updateTicket = async (req, res, next) => {
     }
 
     try {
+        if (data.assigned_to) {
+            return res.status(400).json('You do not have permission to assign tickets to others.')
+        }
+
         const updatedTicket = await prismaUpdateTicket(id, userId, data)
         return res.status(200).json(updatedTicket)
     } catch (error) {

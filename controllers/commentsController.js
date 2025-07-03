@@ -9,6 +9,10 @@ const createComment = async (req, res, next) => {
         return res.status(400).json({ error: 'You do not have permissions to create a comment.' })
     }
 
+    if (!comment) {
+        return res.status(400).json({error: 'Missing required fields: Comment is required'})
+    }
+
     try {
         if (!priority) {
             const newComment = await prismaCreateComment(ticketId, comment, userId)
